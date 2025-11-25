@@ -115,4 +115,12 @@ public class ArrayCollection<T> implements CollectionInterface<T>
   {
     return numElements;
   }
+
+  protected void enlarge(){
+    int newSize = elements.length * 2;
+    T[] newArray = (T[]) new Object[newSize];
+    System.arraycopy(elements, 0, newArray, 0, elements.length);
+    elements = newArray;
+  }
+
 }

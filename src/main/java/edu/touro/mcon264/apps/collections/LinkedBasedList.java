@@ -1,9 +1,8 @@
 package edu.touro.mcon264.apps.collections;
 
-import edu.touro.mcon264.IterableLinkedCollection;
 import edu.touro.mcon264.support.LLNode;
 
-public class LinkedBasedList <T> extends IterableLinkedCollection<T> implements ListInterface<T> {
+public class LinkedBasedList<T> extends IterableLinkedCollection<T> implements ListInterface<T> {
     private void indexChecker(int index) {
         if (index < 0 || index >= numElements) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + numElements);
@@ -12,19 +11,28 @@ public class LinkedBasedList <T> extends IterableLinkedCollection<T> implements 
 
     @Override
     public void add(int index, T element) throws IndexOutOfBoundsException {
-        indexChecker(index);
-        LLNode<T>  head = this.head;
-        while (index-- > 0 && head != null) {
-            head = head.getLink();
-        }
-        LLNode<T> newNode = new LLNode<>(element);
-        if (head != null) {
-            newNode.setLink(head.getLink());
-            head.setLink(newNode);
-        } else {
-            this.head = newNode;
+        if (index < 0 || index > numElements) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + numElements);
         }
 
+        LLNode<T> newNode = new LLNode<>(element);
+
+        if (index == 0) {
+            // Insert at the beginning
+            newNode.setLink(this.head);
+            this.head = newNode;
+        } else {
+            // Find the node before the insertion point
+            LLNode<T> previous = this.head;
+            for (int i = 0; i < index - 1; i++) {
+                previous = previous.getLink();
+            }
+            // Insert after previous
+            newNode.setLink(previous.getLink());
+            previous.setLink(newNode);
+        }
+
+        numElements++;
     }
 
     @Override
@@ -51,6 +59,7 @@ public class LinkedBasedList <T> extends IterableLinkedCollection<T> implements 
         } else {
             this.head = head.getLink();
         }
+        numElements--;
         return head.getInfo();
     }
 
@@ -59,11 +68,11 @@ public class LinkedBasedList <T> extends IterableLinkedCollection<T> implements 
         LLNode<T> head = this.head;
         int index = 0;
         while (head != null) {
-            index++;
             if (head.getInfo().equals(target)) {
                 return index;
             }
             head = head.getLink();
+            index++;
         }
         return -1;
     }
