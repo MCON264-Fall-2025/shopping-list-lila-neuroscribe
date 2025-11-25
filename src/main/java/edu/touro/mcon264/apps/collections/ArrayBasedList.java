@@ -2,7 +2,7 @@ package edu.touro.mcon264.apps.collections;
 
 import java.util.Iterator;
 
-public class ArrayBasedList <T> extends ArrayCollection<T> implements ListInterface<T>{
+public class ArrayBasedList<T> extends ArrayCollection<T> implements ListInterface<T>{
     private void indexChecker(int index) {
         if (index < 0 || index >= numElements) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + numElements);

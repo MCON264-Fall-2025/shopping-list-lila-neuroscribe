@@ -1,9 +1,7 @@
 package edu.touro.mcon264.apps.collections;
-
-import edu.touro.mcon264.apps.collections.IterableLinkedCollection;
 import edu.touro.mcon264.support.LLNode;
 
-public class LinkedBasedList <T> extends IterableLinkedCollection<T> implements ListInterface<T> {
+public class LinkedBasedList<T> extends IterableLinkedCollection<T> implements ListInterface<T> {
     private void indexChecker(int index) {
         if (index < 0 || index >= numElements) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + numElements);
@@ -15,9 +13,7 @@ public class LinkedBasedList <T> extends IterableLinkedCollection<T> implements 
         if (index < 0 || index > numElements) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + numElements);
         }
-
         LLNode<T> newNode = new LLNode<>(element);
-
         if (index == 0) {
             // Insert at the beginning
             newNode.setLink(this.head);
