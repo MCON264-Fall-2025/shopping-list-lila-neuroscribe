@@ -2,7 +2,7 @@ package edu.touro.mcon264.apps.collections;
 
 import java.util.Iterator;
 
-public class ArrayBasedList <T> extends ArrayCollection<T> implements ListInterface<T>{
+public class ArrayBasedList<T> extends ArrayCollection<T> implements ListInterface<T>{
     private void indexChecker(int index) {
         if (index < 0 || index >= numElements) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + numElements);
@@ -10,7 +10,27 @@ public class ArrayBasedList <T> extends ArrayCollection<T> implements ListInterf
     }
     @Override
     public void add(int index, T element) {
-        this.elements[index] = element;
+        // 1. Index check: allow inserting at the end (index == numElements)
+        if (index < 0 || index > numElements) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + numElements);
+        }
+
+        // 2. Ensure capacity (these names may differ in your ArrayCollection)
+        if (isFull()) {      // or: if (numElements == elements.length)
+            enlarge();       // or whatever your grow method is called
+        }
+
+        // 3. Shift elements one position to the right
+        // from the last used index down to `index`
+        for (int i = numElements; i > index; i--) {
+            elements[i] = elements[i - 1];
+        }
+
+        // 4. Insert new element
+        elements[index] = element;
+
+        // 5. Update size
+        numElements++;
     }
 
     @Override
@@ -23,7 +43,16 @@ public class ArrayBasedList <T> extends ArrayCollection<T> implements ListInterf
     public T remove(int index) {
         indexChecker(index);
         T removedElement = elements[index];
-        remove(removedElement);
+
+        // Shift elements left to fill the gap at `index`
+        for (int i = index; i < numElements - 1; i++) {
+            elements[i] = elements[i + 1];
+        }
+        // Clear the now-unused last slot
+        elements[numElements - 1] = null;
+
+        // Decrement size exactly once
+        numElements--;
         return removedElement;
     }
 
