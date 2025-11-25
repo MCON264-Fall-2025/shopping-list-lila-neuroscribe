@@ -12,5 +12,33 @@ package exercises.shopping_app;
  * Name (alphabetically) when aisles are equal
  */
 public class ShoppingItem implements Comparable<ShoppingItem> {
-    //TODO
+    private String aisle;
+    private String name;
+
+    public ShoppingItem(String aisle, String name) {
+        this.aisle = aisle;
+        this.name = name;
+    }
+
+    public String getAisle() {
+        return aisle;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int compareTo(ShoppingItem other) {
+        int aisleCompare = this.aisle.compareTo(other.aisle);
+        if (aisleCompare != 0) {
+            return aisleCompare;
+        }
+        return this.name.compareToIgnoreCase(other.name);
+    }
+
+    @Override
+    public String toString() {
+        return "Aisle " + aisle + ": " + name;
+    }
 }

@@ -3,9 +3,11 @@ package exercises.shopping_app;
 import edu.touro.mcon264.apps.collections.ArrayBasedList;
 import edu.touro.mcon264.apps.collections.LinkedBasedList;
 import edu.touro.mcon264.apps.collections.ListInterface;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +27,9 @@ public class ShoppingListAppTest {
     // Small helper to extract list contents as strings for easier assertions
     private List<String> toStringList(ListInterface<ShoppingItem> list) {
         List<String> result = new ArrayList<>();
-        for (ShoppingItem item : list) {
+        Iterator<ShoppingItem> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            ShoppingItem item = iterator.next();
             // encode as "aisle:name" for easier comparison
             result.add(item.getAisle() + ":" + item.getName());
         }
@@ -35,6 +39,7 @@ public class ShoppingListAppTest {
     // ---------- Tests for insertSorted (ArrayBasedList) ----------
 
     @Test
+    @DisplayName("insertSorted keeps items ordered by aisle and name (ArrayBasedList)")
     void insertSorted_keepsOrderByAisleAndName_arrayBased() {
         ListInterface<ShoppingItem> list = createArrayBasedList();
 
@@ -62,6 +67,7 @@ public class ShoppingListAppTest {
     // ---------- Tests for insertSorted (LinkedBasedList) ----------
 
     @Test
+    @DisplayName("insertSorted keeps items ordered by aisle and name (LinkedBasedList)")
     void insertSorted_keepsOrderByAisleAndName_linkedBased() {
         ListInterface<ShoppingItem> list = createLinkedBasedList();
 
@@ -89,6 +95,7 @@ public class ShoppingListAppTest {
     // ---------- Tests for shopNext (ArrayBasedList) ----------
 
     @Test
+    @DisplayName("shopNext returns items in sorted order and removes them (ArrayBasedList)")
     void shopNext_returnsItemsInSortedOrder_andRemoves_arrayBased() {
         ListInterface<ShoppingItem> list = createArrayBasedList();
 
@@ -123,6 +130,7 @@ public class ShoppingListAppTest {
     // ---------- Tests for shopNext (LinkedBasedList) ----------
 
     @Test
+    @DisplayName("shopNext returns items in sorted order and removes them (LinkedBasedList)")
     void shopNext_returnsItemsInSortedOrder_andRemoves_linkedBased() {
         ListInterface<ShoppingItem> list = createLinkedBasedList();
 
@@ -157,6 +165,7 @@ public class ShoppingListAppTest {
     // ---------- Edge cases ----------
 
     @Test
+    @DisplayName("insertSorted on empty list places single element at index zero")
     void insertSorted_onEmptyList_placesSingleElementAtIndexZero() {
         ListInterface<ShoppingItem> list = createArrayBasedList();
 
@@ -170,6 +179,7 @@ public class ShoppingListAppTest {
     }
 
     @Test
+    @DisplayName("shopNext on empty list returns null")
     void shopNext_onEmptyListReturnsNull() {
         ListInterface<ShoppingItem> arrayList = createArrayBasedList();
         ListInterface<ShoppingItem> linkedList = createLinkedBasedList();
@@ -182,6 +192,7 @@ public class ShoppingListAppTest {
     }
 
     @Test
+    @DisplayName("Iterator traverses items in sorted order")
     void iterator_traversesInSortedOrder() {
         ListInterface<ShoppingItem> list = createArrayBasedList();
 
@@ -203,4 +214,3 @@ public class ShoppingListAppTest {
                 "Iterator / for-each should see items in sorted order");
     }
 }
-
